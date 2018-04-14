@@ -1,6 +1,6 @@
 {
     "name": "artem/rest-api-framework",
-    "description": "rest-api, framework",
+    "description": "rest-api framework",
     "type": "project",
     "license": "BSD-3",
     "authors": [
@@ -16,5 +16,29 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "RestFramework\\": "src/"
+        }
+    },
+    "scripts": {
+        "build-env": [
+            "cp .env.dist .env"
+        ],
+        "build": [
+            "@build-env",
+            "@composer install"
+        ],
+        "docker:build": [
+            "@build-env",
+            "docker-compose up --force-recreate -d",
+            "sleep 10",
+            "docker-compose exec -T app composer run-script build",
+            "echo \"All ok!\""
+        ],
+        "docker:cleanup": [
+            "docker-compose rm -fsv"
+        ]
     }
 }
